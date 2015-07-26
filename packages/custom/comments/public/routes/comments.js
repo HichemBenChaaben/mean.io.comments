@@ -1,10 +1,18 @@
-'use strict';
+(function(window) {
+    'use strict';
+    angular.module('mean.comments').config(routeConf);
+    routeConf.$inject = ['$stateProvider'];
 
-angular.module('mean.comments').config(['$stateProvider',
-  function($stateProvider) {
-    $stateProvider.state('comments example page', {
-      url: '/comments/example',
-      templateUrl: 'comments/views/index.html'
-    });
-  }
-]);
+    function routeConf($stateProvider) {
+        $stateProvider.state('Manage comments', {
+            url: '/manage',
+            templateUrl: '/comments/views/manage.html',
+            resolve: {
+                loggedin: function(MeanUser) {
+                    return MeanUser.checkLoggedin();
+                }
+            }
+        });
+    }
+
+}(window));
