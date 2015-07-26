@@ -1,0 +1,68 @@
+<div ng-cloak
+     ng-controller="CommentsController as vm"
+     ng-init="vm.displayComments()">
+    <div class="col-md-12">
+        <h6>
+            <span ng-if="vm.commentList.length>0">
+                {{vm.commentList.length}}
+            </span>
+            <span ng-pluralize
+                  count="vm.commentList.length"
+                  when="{'0': 'No comments yet', 1: 'Comment', 'other': 'Comments'}">
+                  Comments
+            </span>
+        </h6>
+        <div ng-repeat="item in vm.commentList track by $index">
+            <hr/>
+            <span class="mean-comments-by-user">
+                {{item.user}}
+            </span>
+            <a href=""
+               class="pull-right"
+               ng-click="vm.deleteUserComment()">
+                <i class="glyphicon glyphicon-remove"></i>
+            </a>
+            <span class="" ng-bind-html="item.content | createAnchors">
+                {{item.content}}
+            </span>
+        </div>
+        <hr/>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <form class="col-md-12" novalidate name="commentsForm" ng-submit="vm.create(commentsForm)">
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea name="comment"
+                                  class="form-control"
+                                  required
+                                  rows="4"
+                                  ng-maxlength="200"
+                                  ng-model="vm.usercomment.comment"
+                                  placeholder="Write a comment..."></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-show="commentsForm.$error.maxlength"
+                             class="alert alert-danger">
+                             <i class="glyphicon glyphicon-flash"></i>
+                              The comment is too long
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-info pull-right"
+                                type="submit"
+                                ng-show="commentsForm.$valid"
+                                ng-disabled="commentsForm.$invalid || commentsForm.$submitted">
+                            <span ng-show="commentsForm.$submitted">Posting...</span>
+                            <span ng-hide="commentsForm.$submitted">Post</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
