@@ -36,8 +36,6 @@ module.exports = function(database, Comments) {
                     type: true,
                     data: 'approved successfully'
                 });
-                // push the approved object to the
-                io.emit('approved', req.body);
             });
         },
         /**
