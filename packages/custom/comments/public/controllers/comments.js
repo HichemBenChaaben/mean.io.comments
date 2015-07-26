@@ -1,9 +1,9 @@
 (function(window) {
     'use strict';
     angular.module('mean.comments').controller('CommentsController', commentsCtrl);
-    commentsCtrl.$inject = ['$scope', 'Global', "$stateParams", 'Comments', 'MeanUser', 'socketIo'];
+    commentsCtrl.$inject = ['$scope', 'Global', "$stateParams", 'Comments', 'MeanUser'];
 
-    function commentsCtrl($scope, Global, $stateParams, Comments, MeanUser, socketIo) {
+    function commentsCtrl($scope, Global, $stateParams, Comments, MeanUser) {
         var vm = this,
             articleId = $stateParams.articleId;
 
@@ -18,13 +18,6 @@
                 articleId: articleId
             }, function(comments) {
                 vm.commentList = comments;
-            });
-            // display approved comments on real-time when the admins just
-            // run a validation through it
-            socketIo.on('approved', function(data) {
-                console.log('socket io emit data', data);
-                alert(data);
-                vm.commentsList.push(data);
             });
         };
 
