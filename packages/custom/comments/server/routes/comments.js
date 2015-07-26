@@ -1,27 +1,17 @@
 'use strict';
 
-/* jshint -W098 */
-// The Package is past automatically as first parameter
-module.exports = function(Comments, app, auth, database) {
+module.exports = function(Comment, app, auth) {
 
-  app.get('/api/comments/example/anyone', function(req, res, next) {
-    res.send('Anyone can access this');
-  });
+    var comments = require('../controllers/comments')(Comment);
 
-  app.get('/api/comments/example/auth', auth.requiresLogin, function(req, res, next) {
-    res.send('Only authenticated users can access this');
-  });
+    // get all the comments for administrator validation
+    app.route('/api/comments')
+        .get(auth.requiresLogin, comments.allComments);
 
-  app.get('/api/comments/example/admin', auth.requiresAdmin, function(req, res, next) {
-    res.send('Only users with Admin role can access this');
-  });
-
-  app.get('/api/comments/example/render', function(req, res, next) {
-    Comments.render('index', {
-      package: 'comments'
-    }, function(err, html) {
-      //Rendering a view from the Package server/views
-      res.send(html);
-    });
-  });
+    // get the comments matching an article
+    app.route('/api/comments/:articleId')
+        .get(auth.requiresLogin, comments.all)
+        .post(auth.requiresLogin, comments.create)
+        .put(auth.requiresLogin, comments.update)
+        .delete(auth.requiresLogin, comments.destroy);
 };
