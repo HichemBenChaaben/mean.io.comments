@@ -1,0 +1,61 @@
+<div class="row" ng-controller="ManageCtrl as vm" ng-cloak>
+    <div class="col-sm-12 col-md-12">
+        <h2>
+            Comments Queue
+            <span class="pull-right" ng-show="vm.commentQueue.length">
+                <span class="badge">{{vm.commentQueue.length}} Pending</span>
+            </span>
+        </h2>
+        <div class="alert alert-success" ng-hide="vm.commentQueue.length">
+            <span>No comments on the queue list yet</span>
+        </div>
+        <form name="manageComments"
+              novalidate
+              ng-show="vm.commentQueue.length"
+              ng-init="vm.displayComments(); manageComments.$submitted=false;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a target="_blank"
+                               alt="Go to the article"
+                               ng-href="/articles/{{vm.comment.articleId}}">Article</a>
+                            <span> on {{vm.comment.created | date}}</span>
+                            <span class="pull-right badge">
+                                {{vm.commentsQueue.length}} Comments on this thread
+                            </span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-body">
+                                <h4 class="media-heading">{{vm.comment.user}}</h4>
+                                <p>{{vm.comment.content}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <button class="btn btn-default"
+                                type="submit"
+                                ng-click="vm.remove(vm.comment); action=delete"
+                                ng-disable="manageComments.$submitted">
+                            <i class="glyphicon glyphicon-remove"></i>
+                            <span ng-hide="manageComments.$submitted && action==delete">Delete</span>
+                            <span ng-show="manageComments.$submitted && action==delete">Submitting delete...</span>
+                        </button>
+                        <button class="btn btn-success"
+                                type="submit"
+                                ng-click="vm.update(vm.comment); action=approve"
+                                ng-disable="manageComments.$submitted">
+                            <i class="glyphicon glyphicon-ok"></i>
+                            <span ng-hide="manageComments.$submitted && action==approve">Validate</span>
+                            <span ng-show="manageComments.$submitted && action==approve">Submitting approval..</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
